@@ -15,9 +15,8 @@ def get_hoops_hype_salary(team, season):
 	"""
     sleep(uniform(1.1, 2))
 
-    team = team.lower().replace(" ", "_")
     season = f"{season}-{season+1}"
-    url = f"https://hoopshype.com/salaries/{team}/{season}/"
+    url = f"https://hoopshype.com/salaries/{team.lower().replace(' ', '_')}/{season}/"
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, "html.parser")
 
@@ -26,10 +25,7 @@ def get_hoops_hype_salary(team, season):
         {"class": "hh-salaries-team-table hh-salaries-table-sortable responsive"},
     )
 
-    columns = [
-        td.text.replace("*", "Inflation Adj")
-        for td in salary_table.find("thead").find_all("tr").pop().find_all("td")
-    ]
+    columns = ["player", "salary", "salary_inflation_adj"]
     rows = [
         [
             td.get("data-value")
