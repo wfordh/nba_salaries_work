@@ -13,7 +13,11 @@ def get_realgm_salary_caps():
     headers = [tr.text for tr in table.find("thead").find_all("tr")[1].find_all("th")]
     headers = [col + " MLE" if col in headers[-3:] else col for col in headers]
     rows = [
-        [td.text for td in tr.find_all("td") if td.text != "-"]
+        [
+            td.text.replace("$", "").replace(",", "")
+            for td in tr.find_all("td")
+            if td.text != "-"
+        ]
         for tr in table.find("tbody").find_all("tr")
     ]
     return headers, rows
